@@ -1,10 +1,27 @@
-FROM node:24
+# Image of the container
+FROM node:22-slim
 
-WORKDIR /usr/src/app
+# Landing Directory 
+WORKDIR /var/www/
 
-COPY package.json package-lock.json ./
-RUN npm ci
+# Package transfer
+COPY package*.json ./
+
+# Modules Installation
+RUN npm install
+
+# All files transfer
 COPY . .
-RUN npm run build
-# Set after the install and build steps, which need the dev dependencies.
-ENV NODE_ENV=production
+
+# Build the server (TypeScript -> dist/) and the admin dashboard (-> dist/dashboard)
+RUN npm run build && npx vite build
+
+# Run in production mode
+ENV APP_ENV=prod
+
+# Listerning Port
+EXPOSE 3000
+
+# Trigger Command
+CMD ["node", "dist/index.js"]
+
