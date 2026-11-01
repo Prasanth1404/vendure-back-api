@@ -15,10 +15,10 @@ export default defineConfig({
             // to introspect the GraphQL schema based on any API extensions
             // and custom fields that are configured.
             vendureConfigPath: pathToFileURL('./src/vendure-config.ts'),
-            // Points to the location of your Vendure server.
+            // Points to the location of your API server.
             // In production, 'auto' lets the dashboard derive the API URL from the
             // server that serves it. In development, we use explicit defaults so that
-            // the Vite dev server can reach the Vendure backend.
+            // the Vite dev server can reach the API backend.
             api: process.env.NODE_ENV === 'production'
                 ? { host: 'auto', port: 'auto' }
                 : { host: 'http://localhost', port: 3000 },

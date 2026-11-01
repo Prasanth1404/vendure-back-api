@@ -1,4 +1,4 @@
-name: 'vendure-api'
+name: 'prasanth-api'
 services:
     mysql_db:
         image: mysql:8
@@ -12,10 +12,10 @@ services:
         ports:
             - "4306:3306"
         labels:
-            - "io.vendure.create.name=vendure-api"
+            - "io.prasanth.create.name=prasanth-api"
 
 volumes:
     mysql_db_data:
         driver: local
         labels:
-            - "io.vendure.create.name=vendure-api"
+            - "io.prasanth.create.name=prasanth-api"

@@ -1,17 +1,8 @@
-# vendure-api
-
-This project was generated with [`@vendure/create`](https://github.com/vendurehq/vendure/tree/master/packages/create).
-
-Useful links:
-
-- [Vendure docs](https://www.vendure.io/docs)
-- [Vendure Discord community](https://www.vendure.io/community)
-- [Vendure on GitHub](https://github.com/vendurehq/vendure)
-- [Vendure plugin template](https://github.com/vendurehq/plugin-template)
+# prasanth-api
 
 ## Directory structure
 
-* `/src` contains the source code of your Vendure server. All your custom code and plugins should reside here.
+* `/src` contains the source code of your Prasanth server. All your custom code and plugins should reside here.
 * `/static` contains static (non-code) files such as assets (e.g. uploaded images) and email templates.
 
 ## Development
@@ -20,7 +11,7 @@ Useful links:
 npm run dev
 ```
 
-will start the Vendure server, [worker](https://www.vendure.io/docs/developer-guide/vendure-worker/) and Dashboard.
+will start the Prasanth server, worker and Dashboard.
 
 ## Build
 
@@ -45,11 +36,10 @@ dev mode no emails are sent. Do not deploy with `APP_ENV=dev`. In production, le
 `.env` is listed in `.gitignore` and `.dockerignore`, so it is not committed and not copied into the Docker image.
 
 Outside dev mode the EmailPlugin writes emails to `static/email/test-emails` and does not send them. Configure an
-[email transport](https://docs.vendure.io/reference/core-plugins/email-plugin/) in `src/vendure-config.ts` before
-you go live.
+email transport in `src/vendure-config.ts` before you go live.
 
-When `NODE_ENV` is `production`, Vendure refuses to start if `SUPERADMIN_PASSWORD` is the default `superadmin`.
-Vendure uses `SUPERADMIN_PASSWORD` to set the password only when it creates the superadmin user. If the database
+When `NODE_ENV` is `production`, the server refuses to start if `SUPERADMIN_PASSWORD` is the default `superadmin`.
+The server uses `SUPERADMIN_PASSWORD` to set the password only when it creates the superadmin user. If the database
 already has that user, for example because you created it in development, changing `SUPERADMIN_PASSWORD` does not
 change its password. Change it in the Dashboard instead.
 
@@ -79,26 +69,26 @@ the server & worker processes.
 We've included a sample [Dockerfile](./Dockerfile) which you can build with the following command:
 
 ```
-docker build -t vendure .
+docker build -t prasanth .
 ```
 
-This builds an image and tags it with the name "vendure". The image does not contain `.env`, so create a
+This builds an image and tags it with the name "prasanth". The image does not contain `.env`, so create a
 `.env.production` file with the same variables, set `APP_ENV=production` in it and replace the development values.
 We can then run the image with:
 
 ```
 # Run the server
-docker run -dp 3000:3000 --env-file .env.production -e "DB_HOST=host.docker.internal" --name vendure-server vendure npm run start:server
+docker run -dp 3000:3000 --env-file .env.production -e "DB_HOST=host.docker.internal" --name prasanth-server prasanth npm run start:server
 
 # Run the worker
-docker run -d --env-file .env.production -e "DB_HOST=host.docker.internal" --name vendure-worker vendure npm run start:worker
+docker run -d --env-file .env.production -e "DB_HOST=host.docker.internal" --name prasanth-worker prasanth npm run start:worker
 ```
 
 Here is a breakdown of the command used above:
 
 - `docker run` - run the image we created with `docker build`
 - `-dp 3000:3000` - the `-d` flag means to run in "detached" mode, so it runs in the background and does not take
-control of your terminal. `-p 3000:3000` means to expose port 3000 of the container (which is what Vendure listens
+control of your terminal. `-p 3000:3000` means to expose port 3000 of the container (which is what the server listens
 on by default) as port 3000 on your host machine. The worker command has no `-p` option, because the worker does not
 serve HTTP requests and the server container already uses port 3000.
 - `--env-file .env.production` - loads the environment variables from `.env.production` into the container.
@@ -106,8 +96,8 @@ serve HTTP requests and the server container already uses port 3000.
 are setting the `DB_HOST` to point to a special DNS name that is created by Docker desktop which points to the IP of
 the host machine. Note that `host.docker.internal` only exists in a Docker Desktop environment and thus should only be
 used in development.
-- `--name vendure-server` - we give the container a human-readable name.
-- `vendure` - we are referencing the tag we set up during the build.
+- `--name prasanth-server` - we give the container a human-readable name.
+- `prasanth` - we are referencing the tag we set up during the build.
 - `npm run start:server` - this last part is the actual command that should be run inside the container.
 
 ### Docker Compose
@@ -131,8 +121,7 @@ docker-compose up redis
 
 ## Plugins
 
-In Vendure, your custom functionality will live in [plugins](https://www.vendure.io/docs/plugins/).
-These should be located in the `./src/plugins` directory.
+Your custom functionality will live in plugins. These should be located in the `./src/plugins` directory.
 
 To create a new plugin run:
 
@@ -140,11 +129,11 @@ To create a new plugin run:
 npx vendure add
 ```
 
-and select `[Plugin] Create a new Vendure plugin`.
+and select `[Plugin] Create a new plugin`.
 
 ## Migrations
 
-[Migrations](https://www.vendure.io/docs/developer-guide/migrations/) allow safe updates to the database schema. Migrations
+Migrations allow safe updates to the database schema. Migrations
 will be required whenever you make changes to the `customFields` config or define new entities in a plugin.
 
 To generate a new migration, run:
@@ -170,7 +159,7 @@ You can also run any pending migrations manually, without starting the server vi
 
 ## Troubleshooting
 
-### Error: Could not load the "sharp" module using the \[OS\]-x\[Architecture\] runtime when running Vendure server.
+### Error: Could not load the "sharp" module using the \[OS\]-x\[Architecture\] runtime when running the server.
 
 - Make sure your Node version is ^18.17.0 || ^20.3.0 || >=21.0.0 to support the Sharp library.
 - Make sure your package manager is up to date.

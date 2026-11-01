@@ -106,7 +106,7 @@ export const config: VendureConfig = {
                 verifyEmailAddressUrl: `${process.env.STOREFRONT_URL}/account/verify`,
                 passwordResetUrl: `${process.env.STOREFRONT_URL}/account/reset-password`,
                 changeEmailAddressUrl: `${process.env.STOREFRONT_URL}/account/change-email-address`,
-                // The URL of the password reset page of the Vendure Dashboard.
+                // The URL of the password reset page of the admin dashboard.
                 adminPasswordResetUrl: `http://localhost:${serverPort}/dashboard/reset-password`
             },
         }),
