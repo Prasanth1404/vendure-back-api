@@ -51,5 +51,4 @@ jobs:
       # Step 4 
       - name: Image Push
         run: | 
-          docker push ${{ secrets.ECR_PUSH_STRING }}/vendure-api:${{ github.run_number }}
           docker push ${{ secrets.ECR_PUSH_STRING }}/vendure-api:latest
